@@ -16,7 +16,7 @@ const ActionModal = ({
 }) => {
   return (
     <AlertDialog open={open} onOpenChange={setOpen}>
-  <AlertDialogTrigger>
+  <AlertDialogTrigger asChild>
     {trigger}
   </AlertDialogTrigger>
   <AlertDialogContent>
