@@ -1,0 +1,28 @@
+import mongoose, { Schema, models } from "mongoose";
+
+const InvoiceModel = new Schema ({
+    name: {
+        type: Object,
+        required: true
+    },
+    amount: {
+        type: String,
+        trim: true,
+        required: true
+    },
+    status: {
+        type: String,
+        default: "ünpaid",
+        required: true
+    },
+    snet: {
+        type: Number,
+        default: 0,
+        required: true
+    },
+},
+{ timestamps: true }
+)
+
+const Invoice = models?.Invoice || mongoose.model("Invoice", InvoiceModel);
+export default Invoice;
