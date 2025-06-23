@@ -1,7 +1,8 @@
+
 import mongoose, { Schema, models } from "mongoose";
 
 const InvoiceModel = new Schema ({
-    name: {
+    customer: {
         type: Object,
         required: true
     },
