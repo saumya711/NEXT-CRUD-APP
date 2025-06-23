@@ -25,6 +25,9 @@ import { SelectGroup, SelectLabel } from '@radix-ui/react-select';
 import { Input } from '../ui/input';
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group"
 import { LoadingButton } from '../widgets/Loader';
+import { useRouter, useSearchParams } from 'next/navigation'; 
+import { createInvoice } from '@/actions/InvoiceActions';
+import { toast } from 'react-toastify';
 
 const customers = [
   {
@@ -63,6 +66,10 @@ const formSchema = z.object({
 const CreateInvoice = () => {
   const[open, setOpen] = useState(false);
 
+  const router = useRouter();
+  const searchParams =  useSearchParams();
+  const id = searchParams.get("id");
+
   const form = useForm({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -74,9 +81,34 @@ const CreateInvoice = () => {
 
   const isLoading = form.formState.isSubmitting;
 
-  function onSubmit(values) {
-    const { name, amount, status } = values
-    console.log(values)
+  async function onSubmit(values) {
+    console.log(values);
+    const { name, amount, status } = values;
+    const customer = customers.find((c) => c.name === name)
+    const formData = {
+      amount,
+      customer,
+      status,
+      id: id ? id : ""
+    }; 
+
+    if (id) {
+      //update
+    } else {
+      //create
+      const res = await createInvoice(formData)
+      console.log(res);
+
+      if (res?.error) {
+        toast.error(res?.error);
+      } 
+      if (res?.message) {
+        toast.success(res?.message);
+      }
+      form.reset();
+      setOpen(false);
+
+    }
   }
   return (
     <div>
@@ -108,7 +140,7 @@ const CreateInvoice = () => {
                   </FormControl>
                   <SelectContent>
                     <SelectGroup>
-                      {/* <SelectLabel>Customer</SelectLabel> */}
+                      <SelectLabel>Customer</SelectLabel>
                       <>
                         {customers?.map((item) => {
                           const { name } = item

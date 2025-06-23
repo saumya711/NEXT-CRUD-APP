@@ -1,4 +1,4 @@
-"user server"
+"use server"
 
 import { connectMongoDB } from "@/lib/mongodb";
 import Invoice from './../models/InvoiceModel';
@@ -18,16 +18,16 @@ export const getErrorMessages = (error) => {
 }
 
 export const createInvoice = async (formData) => {
-    const { name, amount, status } = formData;
+    const { customer, amount, status } = formData;
     try {
-        if (!name || !amount || !status) {
+        if (!customer || !amount || !status) {
             return {
                 error: "Please fill all the fields",
             };
         }
         await connectMongoDB()
         await Invoice.create({
-            name,
+            customer,
             amount,
             status
         })
