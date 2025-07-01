@@ -1,9 +1,9 @@
 import React from 'react'
 
-const ListInvoice = () => {
+const ListInvoice = ({ total, pageNumber, invoices: data}) => {
   return (
     <div>
-      List Invoice
+      List Invoice {total}
     </div>
   )
 }
